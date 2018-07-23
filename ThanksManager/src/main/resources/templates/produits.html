@@ -7,44 +7,50 @@
 <title>Liste des produits</title>
 </head>
 <body>
-<div class="container spacer">
-
-	<a th:href="@{formProduit}">Ajouter un produit</a>
+<div id="left-col" class="col-sm-3 col-lg-2" >
+	<div class="spacer" th:insert="Left :: navbar">
+	</div>	
 </div>
-<div class="container spacer">
-	<form th:action="@{index}" method="get">
-		<div class="form-group">
-			<label>Mot clé:</label>
-			<input type="text" name="keyword" th:value="${keyword}"/>
-			<input type="submit" value="Chercher"/>
-		</div>
+<div class="col-sm-9 col-lg-10">
+	<div class="container spacer">
 	
-	</form>
-</div>
-<div class="container spacer">
-	<table class="table">
-		<thead>
-			<tr><th>ID</th><th>nom</th><th>Type</th><th>prix</th><th>quantité</th><th>Photo</th></tr></thead>
-			<tbody>
-				<tr th:each="p:${produits}">
-				<td th:text="${p.id}"></td>
-				<td th:text="${p.name}"></td>
-				<td th:text='${tp[p.id]}'></td>
-				<td th:text="${p.price}"></td>
-				<td th:text="${p.quantity}"></td>
-				<td ><img th:src="@{getImage(id=${p.id})}" width="100" height="100" class="img-circle" /> </td>
-				<td><a onclick="return confirm('êtes vous sûr?')" th:href="@{delete(id=${p.id})}">Supprimer</a></td>
-				<td><a  th:href="@{edit(id=${p.id})}">Editer</a></td>
-				</tr>
-			</tbody>
-</table>
-</div>
-<div class="container">
-<ul class="nav nav-pills">
-<li th:each="p:${pages}" th:class="${p==pageCourante}?active:''"><a th:href="@{index(page=${p},motCle=${keyword})}" th:text="${p}"></a> 
-	
-</li>
-</ul>
+		<a th:href="@{formProduit}">Ajouter un produit</a>
+	</div>
+	<div class="container spacer">
+		<form th:action="@{index}" method="get">
+			<div class="form-group">
+				<label>Mot clé:</label>
+				<input type="text" name="keyword" th:value="${keyword}"/>
+				<input type="submit" value="Chercher"/>
+			</div>
+		
+		</form>
+	</div>
+	<div class="container spacer">
+		<table class="table">
+			<thead>
+				<tr><th>ID</th><th>nom</th><th>Type</th><th>prix</th><th>quantité</th><th>Photo</th></tr></thead>
+				<tbody>
+					<tr th:each="p:${produits}">
+					<td th:text="${p.id}"></td>
+					<td th:text="${p.name}"></td>
+					<td th:text='${tp[p.id]}'></td>
+					<td th:text="${p.price}"></td>
+					<td th:text="${p.quantity}"></td>
+					<td ><img th:src="@{getImage(id=${p.id})}" width="100" height="100" class="img-circle" /> </td>
+					<td><a onclick="return confirm('êtes vous sûr?')" th:href="@{delete(id=${p.id})}">Supprimer</a></td>
+					<td><a  th:href="@{edit(id=${p.id})}">Editer</a></td>
+					</tr>
+				</tbody>
+	</table>
+	</div>
+	<div class="container">
+	<ul class="nav nav-pills">
+	<li th:each="p:${pages}" th:class="${p==pageCourante}?active:''"><a th:href="@{index(page=${p},motCle=${keyword})}" th:text="${p}"></a> 
+		
+	</li>
+	</ul>
+	</div>
 </div>
 </body>
 </html>
