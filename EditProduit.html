@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" />
+<meta charset="UTF-8"/>
+<title>Formulaire étudiant</title>
+</head>
+<body>
+<div id="left-col" class="col-sm-3 col-lg-2" >
+	<div class="spacer" th:insert="Left :: navbar">
+	</div>	
+</div>
+<div class="col-sm-9 col-lg-10">
+<div class="col-md-6 spacer col-md-offset-3">
+	<div class="panel panel-default ">
+		<div class="panel-heading">Saisie d'un produit:</div>
+		<div class="panel-body">
+			<form th:action="@{updateProduit}" enctype="multipart/form-data" method="post" th:object="${produit}">
+				<div class="form-group">
+					<label class="control-label">Id:</label>
+					<input type="text" th:field="*{id}" class="form-control"/>
+					<span th:errors="*{id}" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Nom:</label>
+					<input type="text" th:field="*{name}" class="form-control"/>
+					<span th:errors="*{name}" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Type:</label>
+					<select  th:field="*{typeProduit}" class="form-control">
+						<option th:each="tp:${tp}" th:value="${tp.id}" th:text="${tp.name}">
+           			 </select>
+					<!-- <input type="text" th:field="*{typeProduit}" class="form-control"/> -->
+					<span th:errors="*{typeProduit}" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Prix:</label>
+					<input type="text" th:field="*{price}" class="form-control"/>
+					<span th:errors="*{price}" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Quantité:</label>
+					<input type="text" th:field="*{quantity}" class="form-control"/>
+					<span th:errors="*{quantity}" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Photo:</label>
+					<input type="file" name="picture" class="form-control"/>
+					<span th:errors="*{image}"></span>
+					<img th:src="@{getImage(id=*{id})}" width="100" height="100" class="img-circle" /> 
+			
+					</div>
+				<div>
+					<input type="submit" value="Modifier" class="btn btn-primary"/>
+				</div>
+			
+			</form>
+		
+		</div>
+	</div>
+	</div>
+	</div>
+</body>
+</html>
