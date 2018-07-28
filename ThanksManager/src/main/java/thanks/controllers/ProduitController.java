@@ -40,20 +40,23 @@ public class ProduitController {
 	@Value(value = "${dir.images}")
 	private String imageDir;
 	
-	
+/**********************************************************************************************************/
+	/***************************************produits**********************************************/
+	/****************************************************************************************************/
 	@RequestMapping(value="index")
 	public String index(Model  model , @RequestParam(name="page",defaultValue="0") int page, @RequestParam(name="keyword",defaultValue="")String keyword) {
 		
+		System.out.println("mot clé: "+keyword);
 		Page<Produit> etds =  produitRepository.searchProduit("%"+keyword+"%", new PageRequest(page, 5));
 		
 		//association du produit avec le nom de son type à travers une map
 		HashMap<Long,String> tp = new HashMap<Long, String>();
 		for(Produit p:etds) {
+			
 			String typeName = typeproduitRepository.getNameById(p.getTypeProduit());
-			System.out.println(p.getTypeProduit()+" : "+typeName);
 			tp.put(p.getId(),typeName);
 		}
-		System.out.println("Map:"+tp.toString());
+		
 		
 		
 		int pageCount = etds.getTotalPages();
@@ -70,9 +73,13 @@ public class ProduitController {
 		
 	}
 	@RequestMapping(value="formProduit", method=RequestMethod.GET)
-	public String formEtudiant(Model model) {
+	public String formProduit(Model model) {
+		
+		List<Typeproduit> tp= typeproduitRepository.findAll();
+		
+		model.addAttribute("tp",tp);
 		model.addAttribute("produit", new Produit());
-		model.addAttribute("success",0);
+		
 		return "formProduit";
 	}
 	@RequestMapping(value="saveProduit", method=RequestMethod.POST)
@@ -80,15 +87,15 @@ public class ProduitController {
 		
 		
 		if(bindingResult.hasErrors()) {
-			System.out.println(et.getId());
+			
 			return "formProduit";
 		}
-		System.out.println(et.getId());
+		
 		produitRepository.save(et);
 		if(!photo.isEmpty() ) {
-			System.out.println("photo");
+			
 			et.setImage(et.getId()+".jpg");
-			System.out.println(et.getImage());
+			
 			photo.transferTo(new File(imageDir+et.getImage()));
 			
 		}
@@ -97,7 +104,7 @@ public class ProduitController {
 	}
 	
 	@RequestMapping(value="updateProduit", method=RequestMethod.POST)
-	public String updateEtudiant(Model model,@Valid Produit et,BindingResult bindingResult,@RequestParam(name="picture")MultipartFile photo) throws IllegalStateException, IOException {
+	public String updateProduit(Model model,@Valid Produit et,BindingResult bindingResult,@RequestParam(name="picture")MultipartFile photo) throws IllegalStateException, IOException {
 		
 		if(bindingResult.hasErrors()) {
 			
@@ -128,7 +135,7 @@ public class ProduitController {
 		
 		Produit et = produitRepository.getOne(id);
 		List<Typeproduit> tp= typeproduitRepository.findAll();
-		for(Typeproduit t:tp)System.out.println(t.getId()+" : "+t.getName());
+		
 		model.addAttribute("produit",et);
 		model.addAttribute("tp",tp);
 		return "EditProduit";
@@ -148,4 +155,90 @@ public class ProduitController {
 			e.printStackTrace();
 		}
 		return null;}
+	
+	/****************************************************************************************************/
+	/***************************types produits***************************************/
+	/*****************************************************************************************************/
+	
+	
+	@RequestMapping(value="indexType")
+	public String indexType(Model  model , @RequestParam(name="page",defaultValue="0") int page, @RequestParam(name="add",defaultValue="0")int add,@RequestParam(name="editId",defaultValue="0")Long editId, @RequestParam(name="keyword",defaultValue="")String keyword) {
+		
+		Page<Typeproduit> etds =  typeproduitRepository.searchTypeproduit("%"+keyword+"%", new PageRequest(page, 5));
+				
+		int pageCount = etds.getTotalPages();
+		model.addAttribute("typesProduits", etds);
+	
+		int[] pages= new int[pageCount];
+		for(int i=0;i<pageCount;i++) {
+			pages[i]=i;
+		}
+		model.addAttribute("pages", pages);
+		model.addAttribute("pageCourante", page);
+		model.addAttribute("keyword",keyword);
+		
+		//si on souhaite ajouter un type de produit
+		if(add==1) {
+			model.addAttribute("Typeproduit", new Typeproduit());
+			model.addAttribute("add", 1);}
+		//si on souhaite modifier un produit
+		else if(add==2){
+			
+			Typeproduit tp= typeproduitRepository.getOne(editId);
+			//System.out.println("edit"+ editId);
+			model.addAttribute("edittp",tp);
+			model.addAttribute("add", 2);
+		}
+		return "typesProduits";
+		
+	}
+
+	@RequestMapping(value="saveTypeproduit", method=RequestMethod.POST)
+	public String saveTypeproduit(Model model,@Valid Typeproduit tp,BindingResult bindingResult) throws IllegalStateException, IOException {
+		
+		System.out.println(tp.getId());
+		if(bindingResult.hasErrors()) {
+			
+			return "formTypeproduit";
+		}
+		
+		typeproduitRepository.save(tp);
+		
+		
+		return "redirect:indexType";
+	}
+	
+	@RequestMapping(value="updateTypeproduit", method=RequestMethod.POST)
+	public String updateTypeproduit(Model model,@Valid Typeproduit tp,BindingResult bindingResult) throws IllegalStateException, IOException {
+		
+		System.out.println(tp.getName()+" : "+tp.getId());
+		if(bindingResult.hasErrors()) {
+			
+			return "redirect:editType";
+		}
+		
+		typeproduitRepository.save(tp);
+		
+		return "redirect:indexType";
+	}
+	
+	@RequestMapping(value="/deleteType", method=RequestMethod.GET)
+	public String supprimerType(Long id) {
+		
+		typeproduitRepository.deleteById(id);
+		return "redirect:indexType";
+		
+	}
+	@RequestMapping(value="/editType", method=RequestMethod.GET)
+	public String editType(Long id,Model model) {
+		
+		
+		Typeproduit tp = typeproduitRepository.getOne(id);
+		model.addAttribute("typeproduit",tp);
+		
+		return "EditTypeproduit";
+		
+	}
+	
+	
 }

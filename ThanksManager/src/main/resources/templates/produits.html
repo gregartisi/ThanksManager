@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,6 +6,26 @@
 <link rel="stylesheet" type="text/css" href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" />
 <meta charset="UTF-8"/>
 <title>Liste des produits</title>
+<!-- import pour web components -->
+	<script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/bower_components/iron-demo-helpers/demo-pages-shared-styles.html" />
+    <link rel="import" href="/bower_components/iron-demo-helpers/demo-snippet.html" />
+    <link rel="import" href="/bower_components/paper-search-input-master/paper-search-input.html"/>
+<!-- javascript functions -->
+<script type="text/javascript">
+  
+    function get_action(e) {
+    	//alert("test "+form.action);
+    	var keyword= document.querySelector("paper-search-input#colors").value;
+    	
+    	if(e.keyCode == 13){
+	    	document.getElementById("keyword").value=keyword;
+	    	
+	    	document.getElementById("search").submit();
+    	}
+    }
+   
+</script>
 </head>
 <body>
 <div id="left-col" class="col-sm-3 col-lg-2" >
@@ -12,19 +33,46 @@
 	</div>	
 </div>
 <div class="col-sm-9 col-lg-10">
+	
 	<div class="container spacer">
 	
-		<a th:href="@{formProduit}">Ajouter un produit</a>
-	</div>
-	<div class="container spacer">
-		<form th:action="@{index}" method="get">
+	<form th:action="@{index}" name="search" id="search" onSubmit="get_action(this);" method="get">
+	<input type="hidden" id="keyword" name="keyword"/>
+	</form>
+<!-- -----------------------			systeme de recherche web component/polymer---------------------------------
+---------------------------------------------------------------------------------------------------------- -->
+			<custom-style>
+		  <style is="custom-style" include="demo-pages-shared-styles">
+		    .colors {
+		      --search-background-color: #518ac0;
+		      --search-text-color: #518ac0;
+		      --search-label-color: white;
+		      --search-width: 500px;
+		      --search-height: 40px;
+		      --search-margin:0px 0px 25px 0px;
+		      --search-border-width: 2px;
+		      --search-font-size:20px;
+		      --search-field-padding-top:0px;
+		      --search-field-height:20px;
+		    }
+		  </style>
+		</custom-style>
+		<paper-search-input id="colors" name="paper-search" class="colors" onkeydown="get_action(event)"><th:block th:utext="${keyword}"/></paper-search-input>
+
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+	
+	
+	
+		<!-- <form th:action="@{index}" name="search" onSubmit="get_action(this);" method="get">
 			<div class="form-group">
 				<label>Mot clé:</label>
 				<input type="text" name="keyword" th:value="${keyword}"/>
 				<input type="submit" value="Chercher"/>
+				<input type="button" value="Chercher" onClick="get_action( document.getElementById('search'))" />
 			</div>
 		
-		</form>
+		</form>-->
 	</div>
 	<div class="container spacer">
 		<table class="table">
@@ -44,7 +92,10 @@
 				</tbody>
 	</table>
 	</div>
-	<div class="container">
+	<div class="container spacer">
+		<a th:href="@{formProduit}">Ajouter un produit</a>
+	</div>
+	<div class="container spacer">
 	<ul class="nav nav-pills">
 	<li th:each="p:${pages}" th:class="${p==pageCourante}?active:''"><a th:href="@{index(page=${p},motCle=${keyword})}" th:text="${p}"></a> 
 		
@@ -53,4 +104,5 @@
 	</div>
 </div>
 </body>
+
 </html>

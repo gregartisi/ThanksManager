@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,8 +8,9 @@
 </head>
 <nav th:fragment="navbar">
   <ul class="nav nav-pills nav-stacked span2">
-    <li><a th:href="@{index}">Gestion Produits</a></li>
-    <li><a th:href="@{index}">Types de produits</a></li>
-    <li><a href="#">Clients</a></li>
+    <li><a th:href="@{../produits/index}">Gestion Produits</a></li>
+    <li><a th:href="@{../produits/indexType}">Types de produits</a></li>
+    <li><a th:href="@{../customers/index}">Clients</a></li>
   </ul>
+
 </nav>
