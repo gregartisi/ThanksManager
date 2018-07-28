@@ -7,6 +7,11 @@
 <title>Formulaire étudiant</title>
 </head>
 <body>
+<div id="left-col" class="col-sm-3 col-lg-2" >
+	<div class="spacer" th:insert="Left :: navbar">
+	</div>	
+</div>
+<div class="col-sm-9 col-lg-10">
 <div class="col-md-6 spacer col-md-offset-3">
 	<div class="panel panel-default ">
 		<div class="panel-heading">Saisie d'un produit:</div>
@@ -54,6 +59,7 @@
 			</form>
 		
 		</div>
+	</div>
 	</div>
 	</div>
 </body>

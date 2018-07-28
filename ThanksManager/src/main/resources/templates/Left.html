@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/mystyle.css" th:href="@{/css/mystyle.css}" />
+<meta charset="UTF-8"/>
+</head>
+<nav th:fragment="navbar">
+  <ul class="nav nav-pills nav-stacked span2">
+    <li><a th:href="@{../produits/index}">Gestion Produits</a></li>
+    <li><a th:href="@{../produits/indexType}">Types de produits</a></li>
+    <li><a th:href="@{../customers/index}">Clients</a></li>
+  </ul>
+</nav>
