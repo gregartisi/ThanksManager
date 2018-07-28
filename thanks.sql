@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `customer`
+--
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `adress` varchar(45) DEFAULT NULL,
+  `tel` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `contact` varchar(45) DEFAULT NULL,
+  `pays` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customer`
+--
+
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (11,'Doodah Genève','Rue d\'italie 3','xxxxxxxxxxx','kazam@doodah.ch','Kazam',1);
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hibernate_sequence`
 --
 
@@ -33,7 +62,7 @@ CREATE TABLE `hibernate_sequence` (
 
 LOCK TABLES `hibernate_sequence` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-INSERT INTO `hibernate_sequence` VALUES (3);
+INSERT INTO `hibernate_sequence` VALUES (12);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +137,7 @@ CREATE TABLE `typeproduit` (
 
 LOCK TABLES `typeproduit` WRITE;
 /*!40000 ALTER TABLE `typeproduit` DISABLE KEYS */;
-INSERT INTO `typeproduit` VALUES (1,'board'),(2,'gymbag');
+INSERT INTO `typeproduit` VALUES (1,'Board'),(2,'Gymbag'),(3,'Tee-shirt'),(10,'Beanie');
 /*!40000 ALTER TABLE `typeproduit` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -121,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-20 17:27:18
+-- Dump completed on 2018-07-28  9:56:10
