@@ -44,10 +44,21 @@ public class ProduitController {
 	/***************************************produits**********************************************/
 	/****************************************************************************************************/
 	@RequestMapping(value="index")
-	public String index(Model  model , @RequestParam(name="page",defaultValue="0") int page, @RequestParam(name="keyword",defaultValue="")String keyword) {
+	public String index(Model  model , @RequestParam(name="page",defaultValue="0") int page, @RequestParam(name="keyword",defaultValue="")String keyword,@RequestParam(name="typeProduit",defaultValue="0")long typeProduit) {
 		
-		System.out.println("mot clé: "+keyword);
-		Page<Produit> etds =  produitRepository.searchProduit("%"+keyword+"%", new PageRequest(page, 5));
+		Page<Produit> etds;
+		if(typeProduit==0) {
+			 etds =  produitRepository.searchProduit("%"+keyword+"%", new PageRequest(page, 5));
+		}
+		else {
+			etds =  produitRepository.searchProduitByType("%"+keyword+"%",typeProduit, new PageRequest(page, 5));
+		}
+		
+		//liste des type de produit qu'on insère dans le model
+		List<Typeproduit> ltp =  typeproduitRepository.findAll();
+		
+		//le type de produit selectionné
+		Typeproduit selectedTp= typeproduitRepository.getOne(typeProduit);
 		
 		//association du produit avec le nom de son type à travers une map
 		HashMap<Long,String> tp = new HashMap<Long, String>();
@@ -61,6 +72,8 @@ public class ProduitController {
 		
 		int pageCount = etds.getTotalPages();
 		model.addAttribute("produits", etds);
+		model.addAttribute("selectedTp",selectedTp);
+		model.addAttribute("listType",ltp);
 		model.addAttribute("tp",tp);
 		int[] pages= new int[pageCount];
 		for(int i=0;i<pageCount;i++) {

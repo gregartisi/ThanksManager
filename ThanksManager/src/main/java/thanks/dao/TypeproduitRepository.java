@@ -1,6 +1,8 @@
 package thanks.dao;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,8 @@ import thanks.entities.Typeproduit;
 
 public interface TypeproduitRepository extends JpaRepository<Typeproduit, Long> {
 
+
+	
 	@Query("select name from Typeproduit tp where tp.id = :x")
 	public String getNameById(@Param(value="x")long key);
 	

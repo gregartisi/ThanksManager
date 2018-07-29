@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,18 +11,24 @@
     <link rel="import" href="/bower_components/iron-demo-helpers/demo-snippet.html" />
     <link rel="import" href="/bower_components/paper-search-input-master/paper-search-input.html"/>
 <!-- javascript functions -->
-<script type="text/javascript">
+<script th:inline="javascript">
+  var selectedTp= /*[[${selectedTp.id}]]*/;
   
+  	function setSelectedTp(selectedTp){
+  		this.selectedTp=selectedTp;
+  	}
     function get_action(e) {
     	//alert("test "+form.action);
     	var keyword= document.querySelector("paper-search-input#colors").value;
     	
     	if(e.keyCode == 13){
+    		
 	    	document.getElementById("keyword").value=keyword;
-	    	
+	    	document.getElementById("typeProduit").value=this.selectedTp;
 	    	document.getElementById("search").submit();
     	}
     }
+   
    
 </script>
 </head>
@@ -36,8 +41,9 @@
 	
 	<div class="container spacer">
 	
-	<form th:action="@{index}" name="search" id="search" onSubmit="get_action(this);" method="get">
-	<input type="hidden" id="keyword" name="keyword"/>
+	<form th:action="@{index}" name="search" id="search" method="get">
+		<input type="hidden" id="keyword" name="keyword"/>
+		<input type="hidden" id="typeProduit" name="typeProduit"/>
 	</form>
 <!-- -----------------------			systeme de recherche web component/polymer---------------------------------
 ---------------------------------------------------------------------------------------------------------- -->
@@ -60,7 +66,13 @@
 		<paper-search-input id="colors" name="paper-search" class="colors" onkeydown="get_action(event)"><th:block th:utext="${keyword}"/></paper-search-input>
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
-
+		<form th:action="@{index}" id="sort">
+			<input type="hidden" th:value="${keyword}" name="keyword" />
+			<select onChange="sort.submit()" name="typeProduit">
+				<option th:text="All" th:value="0"></option>
+				<option th:each="t:${listType}" th:text="${t.name}" th:value=${t.id} th:selected="${selectedTp.id == t.id}"></option>
+			</select>
+		</form>
 	
 	
 	
@@ -104,5 +116,4 @@
 	</div>
 </div>
 </body>
-
 </html>
